@@ -1,0 +1,70 @@
+{
+  "format_version": 1,
+  "generated_at": "2026-08-13T12:55:32.472960Z",
+  "packages": [
+    {
+      "dictionary_id": "531f9a7b-aad8-452b-830f-1ed6531bd2da",
+      "name": "Ancient Greek–Turkish Wiktionary",
+      "source_language": "grc",
+      "target_language": "tr",
+      "version": "2026-08-04",
+      "format_version": 1,
+      "entry_count": 1715,
+      "archive_url": "https://github.com/baagiti/epub-reader-dictionary-packs/releases/download/dictionary-packs-v1/ancient-greek-turkish-wiktionary.dictpack.zip",
+      "archive_sha256": "474329c7fe1dddea5f62d251c6b4376bf7f44f812955cf0184f08772998241d9",
+      "archive_bytes": 194422,
+      "installed_bytes": 583949,
+      "license_label": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Turkish Wiktionary contributors; extracted with Wiktextract/Kaikki.org"
+    },
+    {
+      "dictionary_id": "e4875ff1-02c1-42d2-94cd-2e56d7f14c0e",
+      "name": "German-English Wiktionary",
+      "source_language": "de",
+      "target_language": "en",
+      "version": "2022.11.09",
+      "format_version": 1,
+      "entry_count": 70407,
+      "archive_url": "https://github.com/baagiti/epub-reader-dictionary-packs/releases/download/dictionary-packs-v1/german-english-wiktionary.dictpack.zip",
+      "archive_sha256": "289b5d45bcbc1b43196ba2708ba2b44d575bef4172baf3df14c733fe9708fc8a",
+      "archive_bytes": 30558050,
+      "installed_bytes": 183363184,
+      "license_label": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "attribution": "Wiktionary contributors; extracted with Wiktextract/Kaikki.org"
+    },
+    {
+      "dictionary_id": "6f5b6b4a-2f8d-48f4-86fe-7b260637fc66",
+      "name": "French-English Wiktionary",
+      "source_language": "fr",
+      "target_language": "en",
+      "version": "2022.11.09",
+      "format_version": 1,
+      "entry_count": 79348,
+      "archive_url": "https://github.com/baagiti/epub-reader-dictionary-packs/releases/download/dictionary-packs-v1/french-english-wiktionary.dictpack.zip",
+      "archive_sha256": "778fb2497b70b65d4aaf3f21dd04864a64ead2a73ef29ac002e6eafa378162b9",
+      "archive_bytes": 13082099,
+      "installed_bytes": 69830256,
+      "license_label": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "attribution": "Wiktionary contributors; extracted with Wiktextract/Kaikki.org"
+    },
+    {
+      "dictionary_id": "b61c0ca5-3d32-4dc5-9fb5-6ae72107fcd3",
+      "name": "Spanish-English Wiktionary",
+      "source_language": "es",
+      "target_language": "en",
+      "version": "2022.11.09",
+      "format_version": 1,
+      "entry_count": 98487,
+      "archive_url": "https://github.com/baagiti/epub-reader-dictionary-packs/releases/download/dictionary-packs-v1/spanish-english-wiktionary.dictpack.zip",
+      "archive_sha256": "ce1a02dc6591982392b7131d2870e8156016c0683ddce7f99b49096a683bf26a",
+      "archive_bytes": 23750132,
+      "installed_bytes": 123672179,
+      "license_label": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "attribution": "Wiktionary contributors; extracted with Wiktextract/Kaikki.org"
+    }
+  ]
+}
