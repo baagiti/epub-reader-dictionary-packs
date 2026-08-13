@@ -268,7 +268,7 @@ def build_database(root: Path, output: Path, dictionary_id: str) -> tuple[str, i
     if len(ifos) != 1:
         raise ValueError(f"Expected one IFO file, found {len(ifos)}")
     ifo_path = ifos[0]
-    indexes = list(root.rglob("*.idx"))
+    indexes = list(root.rglob("*.idx")) + list(root.rglob("*.idx.gz"))
     dictionaries = list(root.rglob("*.dict")) + list(root.rglob("*.dict.dz"))
     synonyms = list(root.rglob("*.syn"))
     if len(indexes) != 1 or len(dictionaries) != 1 or len(synonyms) > 1:
@@ -289,7 +289,11 @@ def build_database(root: Path, output: Path, dictionary_id: str) -> tuple[str, i
         if dictionary_path.name.endswith(".dict.dz")
         else dictionary_path.read_bytes()
     )
-    idx = idx_path.read_bytes()
+    idx = (
+        gzip.decompress(idx_path.read_bytes())
+        if idx_path.name.endswith(".idx.gz")
+        else idx_path.read_bytes()
+    )
     if len(idx) != int(values["idxfilesize"]):
         raise ValueError("StarDict index size mismatch")
 
