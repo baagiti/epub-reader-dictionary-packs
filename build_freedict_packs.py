@@ -142,9 +142,9 @@ def safe_extract(archive: Path, destination: Path) -> None:
             path = Path(member.name)
             if path.is_absolute() or ".." in path.parts:
                 raise ValueError(f"Unsafe archive path: {member.name}")
-            if member.issym():
+            if member.issym() or member.islnk():
                 continue
-            if member.islnk() or member.isdev():
+            if member.isdev():
                 raise ValueError(f"Unsupported archive member: {member.name}")
             if member.isfile():
                 total += member.size
