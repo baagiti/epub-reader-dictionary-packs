@@ -153,7 +153,7 @@ def safe_extract(archive: Path, destination: Path) -> None:
 def detect_license(source_root: Path) -> tuple[str, str, str]:
     candidates: list[Path] = []
     for path in source_root.rglob("*"):
-        if not path.is_file() or path.stat().st_size > 32 * 1024 * 1024:
+        if not path.is_file():
             continue
         name = path.name.lower()
         if any(token in name for token in ("license", "licence", "copying")) or path.suffix.lower() in (".tei", ".xml"):
@@ -161,7 +161,10 @@ def detect_license(source_root: Path) -> tuple[str, str, str]:
     evidence_parts: list[str] = []
     for path in candidates:
         try:
-            evidence_parts.append(path.read_text(encoding="utf-8", errors="replace"))
+            with path.open("rb") as source:
+                evidence_parts.append(
+                    source.read(512 * 1024).decode("utf-8", errors="replace")
+                )
         except OSError:
             pass
     evidence = "\n".join(evidence_parts)
