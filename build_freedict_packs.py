@@ -268,18 +268,27 @@ def build_database(root: Path, output: Path, dictionary_id: str) -> tuple[str, i
     if len(ifos) != 1:
         raise ValueError(f"Expected one IFO file, found {len(ifos)}")
     ifo_path = ifos[0]
-    base = ifo_path.with_suffix("")
-    idx_path = Path(f"{base}.idx")
-    dict_path = Path(f"{base}.dict")
-    dict_dz_path = Path(f"{base}.dict.dz")
-    syn_path = Path(f"{base}.syn")
-    if not idx_path.is_file() or (dict_path.is_file() == dict_dz_path.is_file()):
-        raise ValueError("Incomplete or ambiguous StarDict file set")
+    indexes = list(root.rglob("*.idx"))
+    dictionaries = list(root.rglob("*.dict")) + list(root.rglob("*.dict.dz"))
+    synonyms = list(root.rglob("*.syn"))
+    if len(indexes) != 1 or len(dictionaries) != 1 or len(synonyms) > 1:
+        raise ValueError(
+            "Incomplete or ambiguous StarDict file set: "
+            f"ifo={len(ifos)}, idx={len(indexes)}, dict={len(dictionaries)}, "
+            f"syn={len(synonyms)}"
+        )
+    idx_path = indexes[0]
+    dictionary_path = dictionaries[0]
+    syn_path = synonyms[0] if synonyms else None
     values = parse_ifo(ifo_path)
     word_count = int(values["wordcount"])
     offset_bits = int(values.get("idxoffsetbits", "32"))
     sequence = values.get("sametypesequence")
-    data = dict_path.read_bytes() if dict_path.is_file() else gzip.decompress(dict_dz_path.read_bytes())
+    data = (
+        gzip.decompress(dictionary_path.read_bytes())
+        if dictionary_path.name.endswith(".dict.dz")
+        else dictionary_path.read_bytes()
+    )
     idx = idx_path.read_bytes()
     if len(idx) != int(values["idxfilesize"]):
         raise ValueError("StarDict index size mismatch")
@@ -335,7 +344,7 @@ def build_database(root: Path, output: Path, dictionary_id: str) -> tuple[str, i
                 connection.execute("INSERT INTO definitions VALUES (?,?,?,?,?)", (definition_id, entry_count, order, definition, field_type))
         if source_index != word_count:
             raise ValueError(f"StarDict word count mismatch: {source_index} != {word_count}")
-        if syn_path.is_file():
+        if syn_path is not None:
             synonyms = syn_path.read_bytes()
             position = 0
             synonym_count = 0
