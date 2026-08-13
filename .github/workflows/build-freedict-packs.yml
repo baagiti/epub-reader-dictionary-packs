@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository without external actions
+        run: git clone --depth 1 "https://github.com/${GITHUB_REPOSITORY}.git" .
 
       - name: Build and verify pinned FreeDict packs
         run: python3 build_freedict_packs.py --base-catalog catalog-base.json --output release
