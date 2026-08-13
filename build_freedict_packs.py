@@ -232,9 +232,10 @@ def parse_definition(data: bytes, sequence: str | None) -> list[tuple[str, str]]
             text = raw.decode("utf-8")
             if field_type == "h":
                 text = plain_text(text)
-            if field_type.lower() not in set("mgtxykwhnr") or not text:
-                raise ValueError(f"Unsupported or empty StarDict field: {field_type}")
-            fields.append((field_type, text))
+            if field_type.lower() not in set("mgtxykwhnr"):
+                raise ValueError(f"Unsupported StarDict field: {field_type}")
+            if text:
+                fields.append((field_type, text))
     else:
         while position < len(data):
             field_type = chr(data[position])
@@ -243,10 +244,11 @@ def parse_definition(data: bytes, sequence: str | None) -> list[tuple[str, str]]
             text = raw.decode("utf-8")
             if field_type == "h":
                 text = plain_text(text)
-            if field_type.lower() not in set("mgtxykwhnr") or not text:
-                raise ValueError(f"Unsupported or empty StarDict field: {field_type}")
-            fields.append((field_type, text))
-    if position != len(data) or not fields:
+            if field_type.lower() not in set("mgtxykwhnr"):
+                raise ValueError(f"Unsupported StarDict field: {field_type}")
+            if text:
+                fields.append((field_type, text))
+    if position != len(data):
         raise ValueError("Malformed StarDict entry")
     return fields
 
@@ -340,6 +342,9 @@ def build_database(root: Path, output: Path, dictionary_id: str) -> tuple[str, i
             if offset + size > len(data):
                 raise ValueError("StarDict entry points outside dictionary data")
             fields = parse_definition(data[offset:offset + size], sequence)
+            if not fields:
+                entry_ids.append(None)
+                continue
             entry_count += 1
             entry_ids.append(entry_count)
             connection.execute("INSERT INTO entries VALUES (?,?,?,NULL)", (entry_count, headword, normalized))
