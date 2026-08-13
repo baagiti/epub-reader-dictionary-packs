@@ -137,17 +137,21 @@ def safe_extract(archive: Path, destination: Path) -> None:
         members = source.getmembers()
         if len(members) > MAX_ARCHIVE_FILES:
             raise ValueError("Archive contains too many files")
+        safe_members: list[tarfile.TarInfo] = []
         for member in members:
             path = Path(member.name)
             if path.is_absolute() or ".." in path.parts:
                 raise ValueError(f"Unsafe archive path: {member.name}")
-            if member.issym() or member.islnk() or member.isdev():
+            if member.issym():
+                continue
+            if member.islnk() or member.isdev():
                 raise ValueError(f"Unsupported archive member: {member.name}")
             if member.isfile():
                 total += member.size
                 if total > MAX_EXPANDED_BYTES:
                     raise ValueError("Archive expands beyond the configured limit")
-        source.extractall(destination, members=members, filter="data")
+            safe_members.append(member)
+        source.extractall(destination, members=safe_members, filter="data")
 
 
 def detect_license(source_root: Path) -> tuple[str, str, str]:
