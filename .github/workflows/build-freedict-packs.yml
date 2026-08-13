@@ -1,0 +1,38 @@
+name: Build FreeDict dictionary packs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and verify pinned FreeDict packs
+        run: python3 build_freedict_packs.py --base-catalog catalog-base.json --output release
+
+      - name: Publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view dictionary-packs-v1 >/dev/null 2>&1 || \
+            gh release create dictionary-packs-v1 \
+              --title "Dictionary packs v1" \
+              --notes "Open-licensed optional dictionary packs for EPUB Workspace."
+          gh release upload dictionary-packs-v1 release/* --clobber
+
+      - name: Publish merged catalog
+        run: |
+          cp release/catalog.json catalog.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish verified FreeDict catalog"
+            git push
+          fi
