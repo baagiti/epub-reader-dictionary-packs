@@ -168,7 +168,10 @@ def detect_license(source_root: Path) -> tuple[str, str, str]:
     folded = evidence.casefold()
     recognized = (
         ("creativecommons.org/licenses/by-sa/4.0", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0/"),
+        ("attribution-sharealike 4.0 international", "CC BY-SA 4.0", "https://creativecommons.org/licenses/by-sa/4.0/"),
         ("creativecommons.org/licenses/by-sa/3.0", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0/"),
+        ("attribution-sharealike 3.0 unported", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0/"),
+        ("attribution-share alike 3.0 unported", "CC BY-SA 3.0", "https://creativecommons.org/licenses/by-sa/3.0/"),
         ("gnu.org/licenses/gpl-3.0", "GPL-3.0-or-later", "https://www.gnu.org/licenses/gpl-3.0.html"),
         ("gnu.org/licenses/gpl-2.0", "GPL-2.0-or-later", "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html"),
         ("gnu general public license", "GPL-2.0-or-later", "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html"),
